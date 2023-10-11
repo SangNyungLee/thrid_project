@@ -1,0 +1,20 @@
+.card-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.card-image {
+  height: 0;
+  padding-bottom: 60%;
+  /* background-color: lightgray; */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.card-desc {
+  flex: 1 1 auto;
+  padding: 1em;
+  background: white;
+}

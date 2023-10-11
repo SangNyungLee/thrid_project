@@ -1,0 +1,16 @@
+.container {
+  /* margin: 0% 3% 0% 3%; */
+  display: grid;
+  grid-template-columns: 20% 80%;
+}
+body {
+  margin: 0px;
+  padding: 0px;
+}
+.idInput {
+  width: 90%;
+  padding: 0px;
+}
+.btnLogin {
+  width: 100%;
+}
