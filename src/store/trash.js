@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Main.css";
 import Spinner from "react-bootstrap/Spinner";
 import { useSelector } from "react-redux";
-
+import { changeCategory } from "./store";
 //API키
 export default function Main() {
   const apiKey = "AIzaSyBrSPFESYjexkwyDYm99UyIPhBXWtcxK4U";
@@ -15,10 +15,10 @@ export default function Main() {
   const [commentData, setCommentData] = useState({});
   const [comments, setComments] = useState([]);
   const [nextCommentPageToken, setNextCommentPageToken] = useState(null);
+  const [selectedVideos, setSelectedVideos] = useState({});
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [categoryNumber, setCategoryNumber] = useState("");
   const newCategory = useSelector((state) => state.category.category);
-
   const fetchVideos = async (token) => {
     setLoading(true);
     try {
@@ -55,32 +55,32 @@ export default function Main() {
     }
     setLoading(false);
   };
-  // const myNewCategory = async (token) => {
-  //   try {
-  //     const res = await axios.get(
-  //       "https://www.googleapis.com/youtube/v3/videos",
-  //       {
-  //         params: {
-  //           key: apiKey,
-  //           part: "snippet",
-  //           chart: "mostPopular",
-  //           maxResults: 2,
-  //           videoCategoryId: newCategory,
-  //           regionCode: "KR",
-  //           pageToken: token,
-  //         },
-  //       }
-  //     );
-  //     console.log("videos", videos);
-  //     const newVideos = res.data.items;
-  //     setVideos([...newVideos]);
-  //     setPageToken(res.data.nextPageToken);
-  //   } catch (error) {
-  //     if (error.response) {
-  //       console.error("에러입니다.", error);
-  //     }
-  //   }
-  // };
+  const myNewCategory = async (token) => {
+    try {
+      const res = await axios.get(
+        "https://www.googleapis.com/youtube/v3/videos",
+        {
+          params: {
+            key: apiKey,
+            part: "snippet",
+            chart: "mostPopular",
+            maxResults: 2,
+            videoCategoryId: newCategory,
+            regionCode: "KR",
+            pageToken: token,
+          },
+        }
+      );
+      console.log("videos", videos);
+      const newVideos = res.data.items;
+      setVideos([...newVideos]);
+      setPageToken(res.data.nextPageToken);
+    } catch (error) {
+      if (error.response) {
+        console.error("에러입니다.", error);
+      }
+    }
+  };
   const fetchComments = async (videoId, token) => {
     try {
       const res = await axios.get(
@@ -114,10 +114,34 @@ export default function Main() {
       }
     }
   };
-
+  const fetchIcon = async (channelId) => {
+    try {
+      const res = await axios.get(
+        "https://www.googleapis.com/youtube/v3/channels",
+        {
+          params: {
+            key: apiKey,
+            part: "snippet,replies",
+            channelId: channelId,
+            maxResults: 10,
+          },
+        }
+      );
+      console.log("아이디값", channelId);
+      console.log("레스값", res);
+      return res.data.items[0].snippet.thumbnails.high.url;
+    } catch (error) {
+      console.log("아이콘에러", error);
+      return null;
+    }
+  };
   useEffect(() => {
     fetchVideos();
   }, [newCategory]);
+
+  // useEffect(() => {
+  //   fetchVideos();
+  // }, []);
 
   useEffect(() => {
     async function fetchCommentsForVideos() {
@@ -133,7 +157,6 @@ export default function Main() {
       fetchCommentsForVideos();
     }
   }, [videos]);
-
   // 스크롤 이벤트
   window.onscroll = () => {
     if (
@@ -144,6 +167,12 @@ export default function Main() {
         fetchVideos(pageToken);
       }
     }
+  };
+  const toggleSelectedVideo = (videoId) => {
+    setSelectedVideos((prevSelectedVideos) => ({
+      ...prevSelectedVideos,
+      [videoId]: !prevSelectedVideos[videoId],
+    }));
   };
   return (
     <div className="text-center">
@@ -162,13 +191,11 @@ export default function Main() {
                   title="YouTube Video"
                 />
               ) : (
-                <>
-                  <Card.Img
-                    variant="top"
-                    src={video.snippet.thumbnails.standard.url}
-                    onClick={() => setSelectedVideo(video.id)}
-                  />
-                </>
+                <Card.Img
+                  variant="top"
+                  src={video.snippet.thumbnails.standard.url}
+                  onClick={() => setSelectedVideo(video.id)}
+                />
               )}
               <Card.Body>
                 <Card.Title>{video.snippet.channelTitle}</Card.Title>
