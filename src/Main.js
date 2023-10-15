@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Card, Col, Row, Button } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./Main.css";
-import Spinner from "react-bootstrap/Spinner";
-import { useSelector } from "react-redux";
-
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Card, Col, Row, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './Main.css';
+import Spinner from 'react-bootstrap/Spinner';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { BsYoutube, BsFillPinFill } from 'react-icons/bs';
 //API키
 export default function Main() {
-  const apiKey = "AIzaSyBrSPFESYjexkwyDYm99UyIPhBXWtcxK4U";
+  const apiKey = 'AIzaSyBrSPFESYjexkwyDYm99UyIPhBXWtcxK4U';
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [pageToken, setPageToken] = useState("");
+  const [pageToken, setPageToken] = useState('');
   const [commentData, setCommentData] = useState({});
   const [comments, setComments] = useState([]);
   const [nextCommentPageToken, setNextCommentPageToken] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [categoryNumber, setCategoryNumber] = useState("");
+  const [categoryNumber, setCategoryNumber] = useState('');
   const newCategory = useSelector((state) => state.category.category);
 
   const fetchVideos = async (token) => {
@@ -25,23 +26,23 @@ export default function Main() {
       setVideos([]);
 
       const res = await axios.get(
-        "https://www.googleapis.com/youtube/v3/videos",
+        'https://www.googleapis.com/youtube/v3/videos',
         {
           params: {
             key: apiKey,
-            part: "snippet",
-            chart: "mostPopular",
+            part: 'snippet',
+            chart: 'mostPopular',
             maxResults: 2,
             videoCategoryId: newCategory,
-            regionCode: "KR",
+            regionCode: 'KR',
             pageToken: token,
           },
-        }
+        },
       );
-
+      console.log(res);
       //댓글 불러오기
       const newVideos = res.data.items;
-      if (categoryNumber === "" || categoryNumber !== newCategory) {
+      if (categoryNumber === '' || categoryNumber !== newCategory) {
         setCategoryNumber(newCategory);
         setVideos([...newVideos]);
       } else {
@@ -50,11 +51,21 @@ export default function Main() {
       setPageToken(res.data.nextPageToken);
     } catch (error) {
       if (error.response) {
-        console.error("에러입니다.", error);
+        console.error('에러입니다.', error);
       }
     }
     setLoading(false);
   };
+  //글자수 제한 함수
+  function truncateText(text) {
+    if (text.length <= 50) {
+      return text;
+    } else {
+      const sliceText = text.slice(0, 50) + '...';
+      return sliceText;
+    }
+  }
+
   // const myNewCategory = async (token) => {
   //   try {
   //     const res = await axios.get(
@@ -84,22 +95,22 @@ export default function Main() {
   const fetchComments = async (videoId, token) => {
     try {
       const res = await axios.get(
-        "https://www.googleapis.com/youtube/v3/commentThreads",
+        'https://www.googleapis.com/youtube/v3/commentThreads',
         {
           params: {
             key: apiKey,
-            part: "snippet,replies",
+            part: 'snippet,replies',
             videoId: videoId,
             maxResults: 2,
-            order: "relevance",
+            order: 'relevance',
             pageToken: token,
           },
-        }
+        },
       );
       // console.log(res.data);
       return res.data;
     } catch (error) {
-      console.log("댓글오류", error);
+      console.log('댓글오류', error);
       return null;
     }
   };
@@ -151,7 +162,7 @@ export default function Main() {
       <Row className="justify-content-center">
         {videos.map((video) => (
           <Col xs={5} sm={5} md={5} lg={5} key={video.id}>
-            <Card style={{ width: "100%" }}>
+            <Card style={{ width: '100%' }}>
               {selectedVideo === video.id ? (
                 <iframe
                   width="100%"
@@ -175,31 +186,35 @@ export default function Main() {
                 <Card.Text className="cardText">
                   {video.snippet.title}
                 </Card.Text>
+                <div style={{ color: 'gray' }}>
+                  {truncateText(video.snippet.description)}
+                </div>
+
                 {commentData[video.id] && (
                   <div>
-                    <h5>댓글</h5>
-                    <ul>
+                    <div>
                       {commentData[video.id].items.map((comment) => (
                         <div key={comment.id}>
-                          <p>
-                            👍{" "}
-                            {comment.snippet.topLevelComment.snippet.likeCount}{" "}
+                          <div>
+                            👍{' '}
+                            {comment.snippet.topLevelComment.snippet.likeCount}{' '}
                             {
                               comment.snippet.topLevelComment.snippet
                                 .textOriginal
                             }
-                          </p>
+                          </div>
                         </div>
                       ))}
-                      <button
-                        variant="primary"
-                        onClick={() => {
-                          loadMoreComments(video.id);
-                        }}
-                      >
+
+                      <button className="btn moreBtn">
+                        <BsYoutube className="btnIcon" />
                         더보기
                       </button>
-                    </ul>
+                      <button className="btn clipBtn">
+                        <BsFillPinFill className="btnIcon" />
+                        스크랩
+                      </button>
+                    </div>
                   </div>
                 )}
               </Card.Body>
@@ -207,6 +222,7 @@ export default function Main() {
           </Col>
         ))}
       </Row>
+      <Link to={`/page?data=ididid`}>페이지 이동</Link>
       {loading && <Spinner animation="border" />}
     </div>
   );

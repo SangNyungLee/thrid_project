@@ -1,4 +1,53 @@
 .mainSide {
-  border: 1px solid red;
-  height: 100%;
+  background-color: #c02929;
+  height: 100vh;
+  position: fixed;
+  width: 220px;
+}
+li {
+  list-style: none;
+}
+.title {
+  height: 59px;
+}
+.commentLogo {
+  display: flex;
+  flex-direction: column; /* 텍스트와 아이콘을 위아래로 배치 */
+  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: center; /* 수평 가운데 정렬 */
+  height: 59px; /* 원하는 높이로 설정하세요 */
+  color: white;
+}
+.commentLogo > svg {
+  margin-bottom: 5px; /* 아이콘과 텍스트 사이의 간격 조정 */
+}
+.idInput {
+  width: 95%;
+  margin-left: 3px;
+  height: 33px;
+  font-size: 13px;
+  border-radius: 3px;
+  box-shadow: none;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  margin-bottom: 5px;
+}
+.btnLogin {
+  background-color: #d32f2f;
+  color: #fff;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 3px;
+  font-size: 13px;
+  line-height: 1.475;
+  vertical-align: middle;
+  transition: all 0.25s;
+  border: 1px;
+}
+.autoLogin {
+}
+.signup {
+}
+.autoSign {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

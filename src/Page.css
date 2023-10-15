@@ -1,0 +1,62 @@
+.moreInfo {
+  display: flex;
+  justify-content: space-evenly;
+}
+.youtubeBtn {
+  background-color: #f55145;
+  border-color: #f44336 !important;
+  color: #fff;
+}
+.youtubeInfo {
+  background-color: #f1709c;
+  border-color: #f06292 !important;
+  color: #fff;
+}
+.youtubeClip {
+  background-color: #414c57;
+  border-color: #3a444e !important;
+  color: #fff;
+}
+.youtubeChannelClip {
+  background-color: #ffb80f;
+  border-color: #ffb300 !important;
+  color: #fff;
+}
+.shareIcon > span > img {
+  border-radius: 50%;
+  margin-right: 10px;
+  margin-top: 20px;
+}
+.shareIcon {
+  text-align: center;
+}
+.positiveBtn {
+  display: inline-block;
+  margin: 0 10px;
+  border-radius: 4px;
+  vertical-align: top;
+  background-color: #db2828;
+}
+.negativeBtn {
+  display: inline-block;
+  margin: 0 1px;
+  border-radius: 4px;
+  vertical-align: top;
+  background-color: #2185d0;
+}
+.vote {
+  text-align: center;
+  width: auto;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 4px;
+  color: #fff;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  cursor: pointer;
+}
+.vote > * {
+  padding: 5px 20px;
+}
