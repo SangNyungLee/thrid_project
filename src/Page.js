@@ -1,33 +1,100 @@
-import { useLocation } from 'react-router-dom';
-import './Page.css';
+import { useLocation } from "react-router-dom";
+import "./Page.css";
 import {
   BsFillHandThumbsUpFill,
   BsFillHandThumbsDownFill,
-} from 'react-icons/bs';
+} from "react-icons/bs";
+import parse from "html-react-parser"; //줄바꿈 바꿔주는애
+import { useEffect, useState } from "react";
+import { fetchComments } from "./func/GetApi";
 export default function Page() {
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const data = searchParams.get('data');
+  const recData = location.state.data;
+  console.log("받은데이터", recData);
+  // console.log("태그", recData.snippet.tags);
+  const [comment, setComment] = useState([]);
+  //원래 시간으로 돌려주는 함수
+  function formatPublishedAt(publishedAt) {
+    const date = new Date(publishedAt);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
+  //조회수 변경해주는 방법
+  function formatNumber(number) {
+    return new Intl.NumberFormat("ko-KR", {
+      notation: "compact",
+      maximumFractionDigits: 1,
+    }).format(number);
+  }
+  // useEffect(() => {
+  //   fetchComments(recData.id)
+  //     .then((res) => {
+  //       for (const ment of res.items) {
+  //         let newComment = {};
+  //         console.log("멘트는?", ment.snippet.topLevelComment.snippet);
+  //         newComment = {
+  //           authorName: ment.snippet.topLevelComment.snippet.authorDisplayName,
+  //           text: ment.snippet.topLevelComment.snippet.textOriginal,
+  //           like: ment.snippet.topLevelComment.snippet.likeCount,
+  //           time: formatPublishedAt(
+  //             ment.snippet.topLevelComment.snippet.publishedAt
+  //           ),
+  //         };
+  //         setComment([comment, newComment]);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log("에러", error);
+  //     });
+  // }, []);
+  useEffect(() => {
+    fetchComments(recData.id)
+      .then((res) => {
+        const newComments = res.items.map((ment) => {
+          return {
+            authorName: ment.snippet.topLevelComment.snippet.authorDisplayName,
+            text: ment.snippet.topLevelComment.snippet.textOriginal,
+            like: ment.snippet.topLevelComment.snippet.likeCount,
+            time: formatPublishedAt(
+              ment.snippet.topLevelComment.snippet.publishedAt
+            ),
+            imgUrl: ment.snippet.topLevelComment.snippet.authorProfileImageUrl,
+          };
+        });
+        setComment(newComments);
+      })
+      .catch((error) => {
+        console.log("에러", error);
+      });
+  }, []);
   return (
     <>
       <header>
         <h2 className="headTitle">
-          <span>[분류]</span>
-          <span>제목부분~~~~</span>
+          {/* <span>[{recData.snippet.categoryId}]</span> */}
+          <span>{recData.snippet.localized.title}</span>
         </h2>
       </header>
       <section>
-        <h2>페이지정보</h2>
+        {/* <h2>{recData.snippet.localized.description}</h2> */}
         <div className="profile_info">
-          <span>이름</span>
-          <span>댓글수</span>
-          <span>조회수</span>
-          <span>시간</span>
+          <span>{recData.snippet.channelTitle}</span>
+          <span>댓글수 : {recData.statistics.commentCount}개 </span>
+          <span>조회수 : {formatNumber(recData.statistics.viewCount)} </span>
+          <span>{formatPublishedAt(recData.snippet.publishedAt)}</span>
         </div>
       </section>
       <section>
-        <div className="videoPlayer"></div>
+        <div className="videoPlayer">
+          <iframe
+            className="goVideo"
+            title={`recData.snippet.channelTitle`}
+            src={`https://www.youtube.com/embed/${recData.id}`}
+          ></iframe>
+        </div>
         <div className="moreInfo">
           <span className="btn youtubeBtn">유튜브에서 보기</span>
           <span className="btn youtubeInfo">유튜브 채널 정보</span>
@@ -81,8 +148,15 @@ export default function Page() {
             />
           </span>
         </div>
-        <div>본문부분</div>
-        <div>해시태그</div>
+        <div className="youtubeDescription">{recData.snippet.description}</div>
+        <br />
+        <div className="hashTags">
+          {recData.snippet.tags
+            ? recData.snippet.tags.map((res) => (
+                <span className="tags btn">#{res}</span>
+              ))
+            : null}
+        </div>
         <div className="vote">
           <span className="positiveBtn">
             <BsFillHandThumbsUpFill />
@@ -96,9 +170,24 @@ export default function Page() {
           </span>
         </div>
         <div>
-          <div className="listBtn">목록</div>
+          <div>좋아요 많은 순</div>
+          <div className="commentList">
+            {comment.map((res) => (
+              <div>
+                <img src={`${res.imgUrl}`} className="commentImg" />
+                <span>이름 : {res.authorName}</span> <br />
+                <span>내용 : {res.text}</span>
+                <br />
+                <span>좋아요 : {res.like}</span>
+                <br />
+                <span>작성시간 : {res.time}</span>
+                <br />
+              </div>
+            ))}
+          </div>
+          {/* <div className="listBtn">목록</div>
           <div className="snsShare">SNS공유</div>
-          <div className="">스크랩</div>
+          <div className="">스크랩</div> */}
         </div>
       </section>
     </>

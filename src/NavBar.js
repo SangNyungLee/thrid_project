@@ -1,9 +1,9 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { changeCategory } from './store';
-import { BsYoutube } from 'react-icons/bs';
-import './NavBar.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { changeCategory } from "./store";
+import { BsYoutube } from "react-icons/bs";
+import "./NavBar.css";
 function NavBar() {
   const category = useSelector((state) => state.category.category);
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ function NavBar() {
   return (
     <div>
       <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">홈</Navbar.Brand>
+        <Navbar.Brand href="/">홈</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" className="order-0">
           <BsYoutube />
         </Navbar.Toggle>
