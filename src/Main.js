@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Card, Col, Row, Button } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./Main.css";
-import Spinner from "react-bootstrap/Spinner";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { BsYoutube, BsFillPinFill } from "react-icons/bs";
-import { fetchComments, truncateText } from "./func/GetApi";
-import YouTube from "react-youtube";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Card, Col, Row, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './Main.css';
+import Spinner from 'react-bootstrap/Spinner';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { BsYoutube, BsFillPinFill } from 'react-icons/bs';
+import { fetchComments, truncateText } from './func/GetApi';
 //API키
 export default function Main() {
-  const apiKey = "AIzaSyBrSPFESYjexkwyDYm99UyIPhBXWtcxK4U";
+  const apiKey = 'AIzaSyBrSPFESYjexkwyDYm99UyIPhBXWtcxK4U';
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [pageToken, setPageToken] = useState("");
+  const [pageToken, setPageToken] = useState('');
   const [commentData, setCommentData] = useState({});
   const [comments, setComments] = useState([]);
   const [nextCommentPageToken, setNextCommentPageToken] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [categoryNumber, setCategoryNumber] = useState("");
+  const [categoryNumber, setCategoryNumber] = useState('');
   const newCategory = useSelector((state) => state.category.category);
 
   const fetchVideos = async (token) => {
@@ -28,23 +27,23 @@ export default function Main() {
       setVideos([]);
 
       const res = await axios.get(
-        "https://www.googleapis.com/youtube/v3/videos",
+        'https://www.googleapis.com/youtube/v3/videos',
         {
           params: {
             key: apiKey,
-            part: "snippet, statistics",
-            chart: "mostPopular",
-            maxResults: 2,
+            part: 'snippet, statistics',
+            chart: 'mostPopular',
+            maxResults: 10,
             videoCategoryId: newCategory,
-            regionCode: "KR",
+            regionCode: 'KR',
             pageToken: token,
           },
-        }
+        },
       );
       console.log(res);
       //댓글 불러오기
       const newVideos = res.data.items;
-      if (categoryNumber === "" || categoryNumber !== newCategory) {
+      if (categoryNumber === '' || categoryNumber !== newCategory) {
         setCategoryNumber(newCategory);
         setVideos([...newVideos]);
       } else {
@@ -53,7 +52,7 @@ export default function Main() {
       setPageToken(res.data.nextPageToken);
     } catch (error) {
       if (error.response) {
-        console.error("에러입니다.", error);
+        console.error('에러입니다.', error);
       }
     }
     setLoading(false);
@@ -97,8 +96,8 @@ export default function Main() {
       <h1>인기동영상</h1>
       <Row className="justify-content-center">
         {videos.map((video) => (
-          <Col xs={5} sm={5} md={5} lg={5} key={video.id}>
-            <Card style={{ width: "100%" }}>
+          <Col xs={7} sm={7} md={5} lg={4} xl={3} xxl={2} key={video.id}>
+            <Card style={{ width: '100%', marginBottom: '20px' }}>
               {selectedVideo === video.id ? (
                 <iframe
                   id={`${video.id}`}
@@ -118,45 +117,56 @@ export default function Main() {
                   />
                 </>
               )}
-              <Card.Body>
-                <Card.Title>{video.snippet.channelTitle}</Card.Title>
-                <Card.Text className="cardText">
-                  {video.snippet.title}
-                </Card.Text>
-                <div style={{ color: "gray" }}>
-                  {truncateText(video.snippet.description)}
-                </div>
-
-                {commentData[video.id] && (
-                  <div>
-                    <div>
-                      {commentData[video.id].items.map((comment) => (
-                        <div key={comment.id}>
-                          <div>
-                            👍{" "}
-                            {comment.snippet.topLevelComment.snippet.likeCount}{" "}
-                            {
-                              comment.snippet.topLevelComment.snippet
-                                .textOriginal
-                            }
-                          </div>
-                        </div>
-                      ))}
-
-                      <button className="btn moreBtn">
-                        <BsYoutube className="btnIcon" />
-                        <Link to="/page" state={{ data: video }}>
-                          더보기
-                        </Link>
-                      </button>
-                      <button className="btn clipBtn">
-                        <BsFillPinFill className="btnIcon" />
-                        스크랩
-                      </button>
-                    </div>
+              <Link to="/page" state={{ data: video }} className="erText">
+                <Card.Body>
+                  <Card.Title>{video.snippet.channelTitle}</Card.Title>
+                  <Card.Text className="cardText">
+                    {video.snippet.title}
+                  </Card.Text>
+                  <div style={{ color: 'gray', marginBottom: '10px' }}>
+                    {truncateText(video.snippet.description)}
                   </div>
-                )}
-              </Card.Body>
+
+                  {commentData[video.id] && (
+                    <div>
+                      <div>
+                        {commentData[video.id].items.map((comment) => (
+                          <div key={comment.id}>
+                            <div className="commentStyle">
+                              <div style={{ marginBottom: '5px' }}>
+                                <span style={{ marginRight: '3px' }}>👍</span>
+                                {
+                                  comment.snippet.topLevelComment.snippet
+                                    .likeCount
+                                }
+                              </div>{' '}
+                              {
+                                comment.snippet.topLevelComment.snippet
+                                  .textOriginal
+                              }
+                            </div>
+                          </div>
+                        ))}
+
+                        <button className="btn moreBtn">
+                          <BsYoutube className="btnIcon" />
+                          <Link
+                            to="/page"
+                            state={{ data: video }}
+                            className="linkColor"
+                          >
+                            더보기
+                          </Link>
+                        </button>
+                        <button className="btn clipBtn">
+                          <BsFillPinFill className="btnIcon" />
+                          스크랩
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </Card.Body>
+              </Link>
             </Card>
           </Col>
         ))}

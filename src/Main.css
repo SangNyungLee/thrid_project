@@ -48,3 +48,26 @@
   font-size: 20px;
   padding-right: 5px;
 }
+.commentStyle {
+  text-align: left;
+  margin-left: 5%;
+  margin-bottom: 10px;
+}
+.erText {
+  text-decoration: none;
+  color: black;
+}
+.linkColor {
+  color: white;
+  text-decoration: none;
+}
+.moreBtn:hover .btnIcon,
+.moreBtn:hover .linkColor {
+  color: black;
+}
+.clipBtn:hover .btnIcon,
+.clipBtn:hover {
+  color: black;
+}
+
+/* 반응형 */

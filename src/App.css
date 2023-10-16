@@ -30,3 +30,11 @@ body {
 .autoSign {
   color: white;
 }
+@media (max-width: 991px) {
+  .myContainer {
+    /* margin: 0% 3% 0% 3%; */
+    display: grid;
+    grid-template-columns: 0% 100%;
+    width: 100%;
+  }
+}

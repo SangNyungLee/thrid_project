@@ -1,9 +1,10 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Nav, NavDropdown } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
-import { changeCategory } from "./store";
-import { BsYoutube } from "react-icons/bs";
-import "./NavBar.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeCategory } from './store';
+import { BsYoutube, BsFillHouseDoorFill } from 'react-icons/bs';
+import './NavBar.css';
+import { WindowDash } from 'react-bootstrap-icons';
 function NavBar() {
   const category = useSelector((state) => state.category.category);
   const dispatch = useDispatch();
@@ -21,20 +22,29 @@ function NavBar() {
   };
   return (
     <div>
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="/">홈</Navbar.Brand>
+      <Navbar bg="light" expand="lg" className="mainNavBar">
+        <Navbar.Brand href="/">
+          <BsFillHouseDoorFill className="goHome" />
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" className="order-0">
-          <BsYoutube />
+          {/* <BsYoutube /> */}
         </Navbar.Toggle>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
-            <Nav.Link onClick={NEW}>최신</Nav.Link>
-            <Nav.Link onClick={MUSIC}>음악</Nav.Link>
-            <Nav.Link onClick={GAME}>게임</Nav.Link>
+            <Nav.Link onClick={NEW} className="navborder">
+              최신
+            </Nav.Link>
+            <Nav.Link onClick={MUSIC} className="navborder">
+              음악
+            </Nav.Link>
+            <Nav.Link onClick={GAME} className="navborder">
+              게임
+            </Nav.Link>
             <Nav.Link onClick={MOVIE}>영화</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
+      <div className="navUnderline"></div>
     </div>
   );
 }
