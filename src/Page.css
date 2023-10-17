@@ -92,3 +92,23 @@
 .commentImg {
   border-radius: 50%;
 }
+.profile_info {
+  font-size: 13px;
+  padding-left: 30px;
+}
+.profile_info > * {
+  padding-right: 10px;
+}
+.videoSection {
+  padding: 10px 30px 10px 30px;
+}
+@media (min-width: 1200px) {
+}
+.channelName {
+  color: #000;
+  font-weight: bold;
+}
+.chaennelTitle {
+  padding-left: 20px;
+  color: #4d627d;
+}

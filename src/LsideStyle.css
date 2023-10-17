@@ -3,23 +3,42 @@
   height: 100vh;
   position: fixed;
   width: 220px;
+  overflow: auto;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
 }
 li {
   list-style: none;
 }
 .title {
   height: 59px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .commentLogo {
   display: flex;
-  flex-direction: column; /* 텍스트와 아이콘을 위아래로 배치 */
-  align-items: center; /* 수직 가운데 정렬 */
-  justify-content: center; /* 수평 가운데 정렬 */
-  height: 59px; /* 원하는 높이로 설정하세요 */
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.myLogo {
+  font-size: 30px;
+  margin-right: 10px;
+}
+
+.additionalText {
+  font-size: 20px;
   color: white;
 }
+
 .commentLogo > svg {
-  margin-bottom: 5px; /* 아이콘과 텍스트 사이의 간격 조정 */
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 .idInput {
   width: 95%;

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import './LsideStyle.css';
-import styled from 'styled-components';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import AccordionFlush from './Accordion';
-import { GoCommentDiscussion } from 'react-icons/go';
-import { BsFillBarChartLineFill } from 'react-icons/bs';
+import React, { useState } from "react";
+import "./LsideStyle.css";
+import styled from "styled-components";
+import "bootstrap/dist/css/bootstrap.min.css";
+import AccordionFlush from "./Accordion";
+import { GoCommentDiscussion } from "react-icons/go";
+import { BsFillBarChartLineFill } from "react-icons/bs";
 export default function Lside() {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -15,8 +15,8 @@ export default function Lside() {
     <div className="mainSide">
       <div className="title">
         <span className="commentLogo">
-          <BsFillBarChartLineFill />
-          댓글모음
+          <BsFillBarChartLineFill className="myLogo" />
+          <span className="additionalText">Comment</span>
         </span>
       </div>
       <input type="text" className="idInput" placeholder="아이디"></input>

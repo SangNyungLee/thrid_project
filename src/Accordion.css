@@ -23,3 +23,7 @@
 .accordion-body > li {
   padding-top: 10px;
 }
+.accordionIcon {
+  padding-right: 8px;
+  font-size: 20px;
+}

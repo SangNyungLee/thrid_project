@@ -24,6 +24,30 @@ const fetchComments = async (videoId, token) => {
     return null;
   }
 };
+
+//검색어 입력받은거 가져오기
+const searchYoutubeVideos = async (query, pageToken) => {
+  try {
+    const result = await axios.get(
+      "https://www.googleapis.com/youtube/v3/search",
+      {
+        params: {
+          key: apiKey,
+          part: "snippet",
+          q: query, //query가 검색부분임
+          maxResults: 10,
+          order: "relevance",
+          pageToken: pageToken,
+        },
+      }
+    );
+    console.log("검색데이터 받아온 결과값", result.data);
+    return result;
+  } catch (error) {
+    console.log("검색에러", error);
+  }
+};
+
 //댓글 가져오기
 //글자수 제한 함수
 function truncateText(text) {
@@ -35,6 +59,4 @@ function truncateText(text) {
   }
 }
 
-//비디오 가져오기
-async function fetchVideos(token) {}
-export { fetchComments, truncateText };
+export { fetchComments, truncateText, searchYoutubeVideos };

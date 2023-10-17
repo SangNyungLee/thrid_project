@@ -1,11 +1,15 @@
-import Accordion from 'react-bootstrap/Accordion';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './Accordion.css';
+import Accordion from "react-bootstrap/Accordion";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./Accordion.css";
+import { BsStar, BsSearch, BsChatRight, BsTrophy } from "react-icons/bs";
 function AccordionFlush() {
   return (
     <Accordion className="accordion">
       <Accordion.Item eventKey="0">
-        <Accordion.Header>유튜브 스크랩</Accordion.Header>
+        <Accordion.Header>
+          <BsStar className="accordionIcon" />
+          유튜브 스크랩
+        </Accordion.Header>
         <Accordion.Body>
           <li>MY 채널 스크랩</li>
           <li>MY 영상 스크랩</li>
@@ -13,7 +17,10 @@ function AccordionFlush() {
       </Accordion.Item>
 
       <Accordion.Item eventKey="1">
-        <Accordion.Header>유튜브 영상검색</Accordion.Header>
+        <Accordion.Header>
+          <BsSearch className="accordionIcon" />
+          유튜브 영상검색
+        </Accordion.Header>
         <Accordion.Body>
           <ul>
             <li>1번</li>
@@ -24,7 +31,10 @@ function AccordionFlush() {
       </Accordion.Item>
 
       <Accordion.Item eventKey="2">
-        <Accordion.Header>커뮤니티</Accordion.Header>
+        <Accordion.Header>
+          <BsChatRight className="accordionIcon" />
+          커뮤니티
+        </Accordion.Header>
         <Accordion.Body>
           <li>공지사항</li>
           <li>자유게시판</li>
@@ -34,7 +44,10 @@ function AccordionFlush() {
       </Accordion.Item>
 
       <Accordion.Item eventKey="3">
-        <Accordion.Header>유튜브 채널랭킹</Accordion.Header>
+        <Accordion.Header>
+          <BsTrophy className="accordionIcon" />
+          유튜브 채널랭킹
+        </Accordion.Header>
         <Accordion.Body>
           <li>전체 순위</li>
           <li>게임</li>

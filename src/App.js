@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Header from './Header';
-import Lside from './Lside';
-import Main from './Main';
-import './App.css';
-import NavBar from './NavBar';
-import Page from './Page';
-import '@fontsource/open-sans'; // Defaults to weight 400
-import '@fontsource/open-sans'; // Defaults to weight 400
-import '@fontsource/open-sans/400.css'; // Specify weight
-import '@fontsource/open-sans/400-italic.css'; // Specify weight and style
-import Sidebar from './SideBar';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from "./Header";
+import Lside from "./Lside";
+import Main from "./Main";
+import "./App.css";
+import NavBar from "./NavBar";
+import Page from "./Page";
+import "@fontsource/open-sans"; // Defaults to weight 400
+import "@fontsource/open-sans"; // Defaults to weight 400
+import "@fontsource/open-sans/400.css"; // Specify weight
+import "@fontsource/open-sans/400-italic.css"; // Specify weight and style
+import Sidebar from "./SideBar";
+import Search from "./Search";
 
 function App() {
   //화면너비 지정
@@ -21,10 +22,10 @@ function App() {
       setWindowWidth(window.innerWidth);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
   return (
@@ -38,7 +39,9 @@ function App() {
           {/* <Header /> */}
           <NavBar />
           <Routes>
+            <Route path="/nav" element={<NavBar />} />
             <Route path="/" element={<Main />} />
+            <Route path="/search" element={<Search />} />
             <Route path="/page" element={<Page />} />
           </Routes>
         </div>

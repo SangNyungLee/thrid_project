@@ -5,42 +5,33 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Main.css";
 import Spinner from "react-bootstrap/Spinner";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { BsYoutube, BsFillPinFill } from "react-icons/bs";
-import { fetchComments, truncateText } from "./func/GetApi";
+import {
+  fetchComments,
+  truncateText,
+  searchYoutubeVideos,
+} from "./func/GetApi";
 //API키
-export default function Main() {
+export default function Search() {
   const apiKey = "AIzaSyBrSPFESYjexkwyDYm99UyIPhBXWtcxK4U";
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageToken, setPageToken] = useState("");
   const [commentData, setCommentData] = useState({});
-  const [comments, setComments] = useState([]);
-  const [nextCommentPageToken, setNextCommentPageToken] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [categoryNumber, setCategoryNumber] = useState("");
   const newCategory = useSelector((state) => state.category.category);
+  const location = useLocation();
+  const recData = location.state.data;
+  console.log("받은데이터", recData);
 
   const fetchVideos = async (token) => {
     setLoading(true);
     try {
       setVideos([]);
-
-      const res = await axios.get(
-        "https://www.googleapis.com/youtube/v3/videos",
-        {
-          params: {
-            key: apiKey,
-            part: "snippet, statistics",
-            chart: "mostPopular",
-            maxResults: 10,
-            videoCategoryId: newCategory,
-            regionCode: "KR",
-            pageToken: token,
-          },
-        }
-      );
-      console.log(res);
+      const res = await searchYoutubeVideos(recData, token);
+      console.log("검색한 결과값은?", res);
       //댓글 불러오기
       const newVideos = res.data.items;
       if (categoryNumber === "" || categoryNumber !== newCategory) {
@@ -66,7 +57,8 @@ export default function Main() {
     async function fetchCommentsForVideos() {
       const comments = {};
       for (const video of videos) {
-        const videoId = video.id;
+        const videoId = video.id.videoId;
+        console.log("비디오아이디!!", videoId);
         const commentInfo = await fetchComments(videoId);
         comments[videoId] = commentInfo;
       }
@@ -112,7 +104,7 @@ export default function Main() {
                 <>
                   <Card.Img
                     variant="top"
-                    src={video.snippet.thumbnails.standard.url}
+                    src={video.snippet.thumbnails.high.url}
                     onClick={() => setSelectedVideo(video.id)}
                   />
                 </>
@@ -130,24 +122,6 @@ export default function Main() {
                   {commentData[video.id] && (
                     <div>
                       <div>
-                        {commentData[video.id].items.map((comment) => (
-                          <div key={comment.id}>
-                            <div className="commentStyle">
-                              <div style={{ marginBottom: "5px" }}>
-                                <span style={{ marginRight: "3px" }}>👍</span>
-                                {
-                                  comment.snippet.topLevelComment.snippet
-                                    .likeCount
-                                }
-                              </div>{" "}
-                              {
-                                comment.snippet.topLevelComment.snippet
-                                  .textOriginal
-                              }
-                            </div>
-                          </div>
-                        ))}
-
                         <button className="btn moreBtn">
                           <BsYoutube className="btnIcon" />
                           <Link

@@ -13,6 +13,9 @@
   background-size: cover;
 }
 
+.scroll::-webkit-scrollbar {
+  display: none;
+}
 .card-desc {
   flex: 1 1 auto;
   padding: 1em;
@@ -71,3 +74,10 @@
 }
 
 /* 반응형 */
+
+@media (max-width: 768px) {
+  .col-sm-7 {
+    flex: 0 0 auto;
+    width: 90%;
+  }
+}

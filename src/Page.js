@@ -4,7 +4,6 @@ import {
   BsFillHandThumbsUpFill,
   BsFillHandThumbsDownFill,
 } from "react-icons/bs";
-import parse from "html-react-parser"; //줄바꿈 바꿔주는애
 import { useEffect, useState } from "react";
 import { fetchComments } from "./func/GetApi";
 export default function Page() {
@@ -29,27 +28,6 @@ export default function Page() {
       maximumFractionDigits: 1,
     }).format(number);
   }
-  // useEffect(() => {
-  //   fetchComments(recData.id)
-  //     .then((res) => {
-  //       for (const ment of res.items) {
-  //         let newComment = {};
-  //         console.log("멘트는?", ment.snippet.topLevelComment.snippet);
-  //         newComment = {
-  //           authorName: ment.snippet.topLevelComment.snippet.authorDisplayName,
-  //           text: ment.snippet.topLevelComment.snippet.textOriginal,
-  //           like: ment.snippet.topLevelComment.snippet.likeCount,
-  //           time: formatPublishedAt(
-  //             ment.snippet.topLevelComment.snippet.publishedAt
-  //           ),
-  //         };
-  //         setComment([comment, newComment]);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log("에러", error);
-  //     });
-  // }, []);
   useEffect(() => {
     fetchComments(recData.id)
       .then((res) => {
@@ -70,24 +48,33 @@ export default function Page() {
         console.log("에러", error);
       });
   }, []);
+
   return (
     <>
       <header>
-        <h2 className="headTitle">
+        <h3 className="headTitle">
           {/* <span>[{recData.snippet.categoryId}]</span> */}
-          <span>{recData.snippet.localized.title}</span>
-        </h2>
+          <span className="chaennelTitle">
+            {recData.snippet.localized.title}
+          </span>
+        </h3>
       </header>
       <section>
         {/* <h2>{recData.snippet.localized.description}</h2> */}
         <div className="profile_info">
-          <span>{recData.snippet.channelTitle}</span>
-          <span>댓글수 : {recData.statistics.commentCount}개 </span>
-          <span>조회수 : {formatNumber(recData.statistics.viewCount)} </span>
-          <span>{formatPublishedAt(recData.snippet.publishedAt)}</span>
+          <span className="channelName">{recData.snippet.channelTitle}</span>
+          <span className="channelComments">
+            댓글 : {recData.statistics.commentCount}개{" "}
+          </span>
+          <span className="channelViews">
+            조회수 : {formatNumber(recData.statistics.viewCount)}{" "}
+          </span>
+          <span className="channelUploadDate">
+            {formatPublishedAt(recData.snippet.publishedAt)}
+          </span>
         </div>
       </section>
-      <section>
+      <section className="videoSection">
         <div className="videoPlayer">
           <iframe
             className="goVideo"
@@ -153,7 +140,9 @@ export default function Page() {
         <div className="hashTags">
           {recData.snippet.tags
             ? recData.snippet.tags.map((res) => (
-                <span className="tags btn">#{res}</span>
+                <span className="tags btn" id={res}>
+                  #{res}
+                </span>
               ))
             : null}
         </div>

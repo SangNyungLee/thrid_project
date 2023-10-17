@@ -3,5 +3,8 @@
 }
 .headerDiv {
   border-bottom: 1px solid silver;
-  padding-top: 50px;
+}
+.headTitle {
+  padding-top: 60px;
+  padding-left: 10px;
 }
