@@ -1,28 +1,28 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Nav, NavDropdown, NavLink } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
-import { changeCategory } from "./store";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Navbar, Nav, NavDropdown, NavLink } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeCategory } from './store';
 import {
   BsYoutube,
   BsFillHouseDoorFill,
   BsFillPersonFill,
   BsCloudPlus,
   BsSearch,
-} from "react-icons/bs";
-import { Link } from "react-router-dom";
-import "./NavBar.css";
-import { WindowDash } from "react-bootstrap-icons";
-import { useState } from "react";
-import { searchYoutubeVideos } from "./func/GetApi";
+} from 'react-icons/bs';
+import { Link } from 'react-router-dom';
+import './NavBar.css';
+import { WindowDash } from 'react-bootstrap-icons';
+import { useState } from 'react';
+import { searchYoutubeVideos } from './func/GetApi';
 function NavBar() {
-  const [youtubeSearch, SetYoutubeSearch] = useState("");
+  const [youtubeSearch, SetYoutubeSearch] = useState('');
   const category = useSelector((state) => state.category.category);
   const dispatch = useDispatch();
 
   const handleKeyDown = async (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       // alert("엔터키 눌림");
-      SetYoutubeSearch("");
+      SetYoutubeSearch('');
       searchYoutubeVideos(youtubeSearch);
     }
   };
@@ -65,23 +65,20 @@ function NavBar() {
             <Nav.Link>
               <input
                 type="text"
-                placeholder={`검색하기🔍`}
+                placeholder={`검색어입력`}
                 value={youtubeSearch}
                 onChange={(e) => SetYoutubeSearch(e.target.value)}
                 onKeyDown={handleKeyDown}
               />
               <span>
-                <Link to={"/search"} state={{ data: youtubeSearch }}>
-                  이동하기
+                <Link to={'/search'} state={{ data: youtubeSearch }}>
+                  <BsSearch className="searchIcons" />
                 </Link>
               </span>
             </Nav.Link>
             <Nav.Link>
-              <BsFillPersonFill />
+              <BsFillPersonFill style={{ fontSize: '30px' }} />
             </Nav.Link>
-            {/* <Nav.Link>
-              <BsCloudPlus />
-            </Nav.Link> */}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

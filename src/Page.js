@@ -1,35 +1,37 @@
-import { useLocation } from "react-router-dom";
-import "./Page.css";
+import { useLocation } from 'react-router-dom';
+import './Page.css';
 import {
   BsFillHandThumbsUpFill,
   BsFillHandThumbsDownFill,
-} from "react-icons/bs";
-import { useEffect, useState } from "react";
-import { fetchComments } from "./func/GetApi";
+  BsHandThumbsUp,
+  BsHandThumbsDown,
+} from 'react-icons/bs';
+import { useEffect, useState } from 'react';
+import { fetchComments } from './func/GetApi';
 export default function Page() {
   const location = useLocation();
   const recData = location.state.data;
-  console.log("받은데이터", recData);
+  console.log('받은데이터', recData);
   // console.log("태그", recData.snippet.tags);
   const [comment, setComment] = useState([]);
   //원래 시간으로 돌려주는 함수
   function formatPublishedAt(publishedAt) {
     const date = new Date(publishedAt);
     const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
 
   //조회수 변경해주는 방법
   function formatNumber(number) {
-    return new Intl.NumberFormat("ko-KR", {
-      notation: "compact",
+    return new Intl.NumberFormat('ko-KR', {
+      notation: 'compact',
       maximumFractionDigits: 1,
     }).format(number);
   }
   useEffect(() => {
-    fetchComments(recData.id)
+    fetchComments(recData.id, 10)
       .then((res) => {
         const newComments = res.items.map((ment) => {
           return {
@@ -37,7 +39,7 @@ export default function Page() {
             text: ment.snippet.topLevelComment.snippet.textOriginal,
             like: ment.snippet.topLevelComment.snippet.likeCount,
             time: formatPublishedAt(
-              ment.snippet.topLevelComment.snippet.publishedAt
+              ment.snippet.topLevelComment.snippet.publishedAt,
             ),
             imgUrl: ment.snippet.topLevelComment.snippet.authorProfileImageUrl,
           };
@@ -45,7 +47,7 @@ export default function Page() {
         setComment(newComments);
       })
       .catch((error) => {
-        console.log("에러", error);
+        console.log('에러', error);
       });
   }, []);
 
@@ -64,10 +66,10 @@ export default function Page() {
         <div className="profile_info">
           <span className="channelName">{recData.snippet.channelTitle}</span>
           <span className="channelComments">
-            댓글 : {recData.statistics.commentCount}개{" "}
+            댓글 : {recData.statistics.commentCount}개{' '}
           </span>
           <span className="channelViews">
-            조회수 : {formatNumber(recData.statistics.viewCount)}{" "}
+            조회수 : {formatNumber(recData.statistics.viewCount)}{' '}
           </span>
           <span className="channelUploadDate">
             {formatPublishedAt(recData.snippet.publishedAt)}
@@ -159,18 +161,31 @@ export default function Page() {
           </span>
         </div>
         <div>
-          <div>좋아요 많은 순</div>
+          <div>
+            <select style={{ marginBottom: '20px', marginTop: '20px' }}>
+              <option>관련성 순</option>
+              <option>좋아요 많은 순</option>
+              <option>최신순</option>
+            </select>
+          </div>
           <div className="commentList">
             {comment.map((res) => (
-              <div>
+              <div className="commentDiv">
                 <img src={`${res.imgUrl}`} className="commentImg" />
-                <span>이름 : {res.authorName}</span> <br />
-                <span>내용 : {res.text}</span>
-                <br />
-                <span>좋아요 : {res.like}</span>
-                <br />
-                <span>작성시간 : {res.time}</span>
-                <br />
+                <div>
+                  <span>@{res.authorName}</span> <span>{res.time}</span>
+                  <br />
+                  <span>{res.text}</span>
+                  <br />
+                  <span>
+                    <BsHandThumbsUp style={{ fontWeight: 'bold' }} />{' '}
+                    <span style={{ fontSize: '13px', fontWeight: 'bold' }}>
+                      {res.like}
+                    </span>
+                  </span>
+                  <br />
+                  <br />
+                </div>
               </div>
             ))}
           </div>
