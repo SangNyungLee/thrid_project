@@ -12,6 +12,7 @@ import "@fontsource/open-sans/400.css"; // Specify weight
 import "@fontsource/open-sans/400-italic.css"; // Specify weight and style
 import Sidebar from "./SideBar";
 import Search from "./Search";
+import Signup from "./Signup";
 
 function App() {
   //화면너비 지정
@@ -43,6 +44,7 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/search" element={<Search />} />
             <Route path="/page" element={<Page />} />
+            <Route path="/signup" element={<Signup />} />
           </Routes>
         </div>
       </BrowserRouter>
