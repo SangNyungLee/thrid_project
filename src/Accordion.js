@@ -1,7 +1,7 @@
-import Accordion from "react-bootstrap/Accordion";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./Accordion.css";
-import { BsStar, BsSearch, BsChatRight, BsTrophy } from "react-icons/bs";
+import Accordion from 'react-bootstrap/Accordion';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './Accordion.css';
+import { BsStar, BsSearch, BsChatRight, BsTrophy } from 'react-icons/bs';
 function AccordionFlush() {
   return (
     <Accordion className="accordion">

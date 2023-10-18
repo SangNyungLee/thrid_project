@@ -22,6 +22,7 @@
 }
 .accordion-body > li {
   padding-top: 10px;
+  cursor: pointer;
 }
 .accordionIcon {
   padding-right: 8px;

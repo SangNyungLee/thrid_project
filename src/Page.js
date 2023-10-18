@@ -5,10 +5,21 @@ import {
   BsFillHandThumbsDownFill,
   BsHandThumbsUp,
   BsHandThumbsDown,
+  BsPaperclip,
 } from 'react-icons/bs';
+//클립보드 복사하기
+import { CopyToClipboard } from 'react-copy-to-clipboard/src';
 import { useEffect, useState } from 'react';
 import { fetchComments } from './func/GetApi';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import ClipIcons from './ClipIcons';
 export default function Page() {
+  //모달부분
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  //
   const location = useLocation();
   const recData = location.state.data;
   console.log('받은데이터', recData);
@@ -30,6 +41,10 @@ export default function Page() {
       maximumFractionDigits: 1,
     }).format(number);
   }
+  //클립 버튼 눌렀을 때 복사되는거
+  const getUrl = (e) => {
+    console.log('링크는', e);
+  };
   useEffect(() => {
     fetchComments(recData.id, 10)
       .then((res) => {
@@ -85,58 +100,28 @@ export default function Page() {
           ></iframe>
         </div>
         <div className="moreInfo">
-          <span className="btn youtubeBtn">유튜브에서 보기</span>
-          <span className="btn youtubeInfo">유튜브 채널 정보</span>
-          <span className="btn youtubeClip">영상 스크랩</span>
+          <a
+            href={`https://www.youtube.com/watch?v=${recData.id}`}
+            className="btn youtubeBtn"
+          >
+            유튜브에서 보기
+          </a>
+          <a
+            className="btn youtubeInfo"
+            href={`https://www.youtube.com/channel/${recData.snippet.channelId}`}
+          >
+            유튜브 채널 정보
+          </a>
+          <span
+            className="btn youtubeClip"
+            variant="primary"
+            onClick={handleShow}
+          >
+            영상 스크랩
+          </span>
           <span className="btn youtubeChannelClip">채널 스크랩</span>
         </div>
-
-        <div className="shareIcon">
-          <span>
-            <img
-              src="https://youtube-rank.com/board/img/sns/facebook.png"
-              alt="Facebook"
-              width="40"
-              title=""
-            />
-          </span>
-          <span>
-            <img
-              src="https://youtube-rank.com/board/img/sns/twitter.png"
-              alt="Twitter"
-              width="40"
-              title=""
-            />
-          </span>
-          <span>
-            <img
-              src="https://youtube-rank.com/board/img/sns/kakaostory.png"
-              alt="KakaoStory"
-              width="40"
-            />
-          </span>
-          <span>
-            <img
-              src="https://youtube-rank.com/board/img/sns/naverband.png"
-              alt="NaverBand"
-              width="40"
-            />
-          </span>
-          <span>
-            <img
-              src="https://youtube-rank.com/board/img/sns/naver.png"
-              alt="Naver"
-              width="40"
-            />
-          </span>
-          <span>
-            <img
-              src="https://youtube-rank.com/board/img/sns/tumblr.png"
-              alt="Tumblr"
-              width="40"
-            />
-          </span>
-        </div>
+        <ClipIcons />
         <div className="youtubeDescription">{recData.snippet.description}</div>
         <br />
         <div className="hashTags">
@@ -189,9 +174,40 @@ export default function Page() {
               </div>
             ))}
           </div>
-          {/* <div className="listBtn">목록</div>
-          <div className="snsShare">SNS공유</div>
-          <div className="">스크랩</div> */}
+          {/* 모달부분 */}
+          <Modal
+            show={show}
+            onHide={handleClose}
+            centered // 이 속성을 추가하여 모달을 화면 가운데로 정렬
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>공유하기</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div>
+                <ClipIcons />
+              </div>
+            </Modal.Body>
+            <Modal.Footer style={{ justifyContent: 'center' }}>
+              <span style={{ border: '2px solid #ddd', padding: '5px' }}>
+                <span className="ClipUrl">{`https://www.youtube.com/watch?v=${recData.id}`}</span>
+
+                <CopyToClipboard
+                  text={`https://www.youtube.com/watch?v=${recData.id}`}
+                  onCopy={() => alert('클립보드에 복사되었습니다.')}
+                >
+                  <button
+                    className="btn"
+                    style={{ backgroundColor: '#F55145', marginLeft: '15px' }}
+                    onClick={(e) => getUrl(e.target.value)}
+                  >
+                    <BsPaperclip />
+                    복사하기
+                  </button>
+                </CopyToClipboard>
+              </span>
+            </Modal.Footer>
+          </Modal>
         </div>
       </section>
     </>
