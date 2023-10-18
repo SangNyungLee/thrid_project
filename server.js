@@ -11,6 +11,6 @@ app.get("/", function (req, res) {
 app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "/build/index.html"));
 });
-app.listen(8000, function () {
-  console.log(`http://localhost:8000`);
+app.listen(3000, function () {
+  console.log(`http://localhost:3000`);
 });
